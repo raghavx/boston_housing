@@ -11966,7 +11966,7 @@ Standard deviation of prices: $165,340.28
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">r2_score</span>
@@ -12030,7 +12030,7 @@ Standard deviation of prices: $165,340.28
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Calculate the performance of this model</span>
@@ -12088,7 +12088,7 @@ Standard deviation of prices: $165,340.28
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.cross_validation</span> <span class="kn">import</span> <span class="n">train_test_split</span>
@@ -14102,9 +14102,9 @@ QmCC
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer: </strong> At depth = 5.</p>
+<p><strong>Answer: </strong> At depth = 3.</p>
 <ul>
-<li>For the best guess optimal model the r-square score should be high and the sse should be lowest. That is we have to minimise the error due to bias and error due to variance. At depth = 5 the square of  error b/w training set and testing set is low (as compared to depth = 10) as well as the r-square is high (as comapred to depth = 1)</li>
+<li>For the best guess optimal model the r-square score should be high and the sse should be lowest. That is we have to minimise the error due to bias and error due to variance. At depth = 3 the square of  error b/w training set and testing set is low (as compared to depth = 10) as well as the r-square is high (as comapred to depth = 1)</li>
 </ul>
 
 </div>
@@ -14197,10 +14197,13 @@ For the <code>fit_model</code> function in the code cell below, you will need to
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[47]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># TODO: Import &#39;make_scorer&#39;, &#39;DecisionTreeRegressor&#39;, and &#39;GridSearchCV&#39;</span>
+<span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeRegressor</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">make_scorer</span>
+<span class="kn">from</span> <span class="nn">sklearn.grid_search</span> <span class="kn">import</span> <span class="n">GridSearchCV</span>
 
 <span class="k">def</span> <span class="nf">fit_model</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Performs grid search over the &#39;max_depth&#39; parameter for a </span>
@@ -14209,22 +14212,26 @@ For the <code>fit_model</code> function in the code cell below, you will need to
     <span class="c1"># Create cross-validation sets from the training data</span>
     <span class="c1"># sklearn version 0.18: ShuffleSplit(n_splits=10, test_size=0.1, train_size=None, random_state=None)</span>
     <span class="c1"># sklearn versiin 0.17: ShuffleSplit(n, n_iter=10, test_size=0.1, train_size=None, random_state=None)</span>
-    <span class="n">cv_sets</span> <span class="o">=</span> <span class="n">ShuffleSplit</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">n_splits</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.20</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+    
+   
+    
+    <span class="n">cv_sets</span> <span class="o">=</span> <span class="n">ShuffleSplit</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">n_iter</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.20</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
 
     <span class="c1"># TODO: Create a decision tree regressor object</span>
-    <span class="n">regressor</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">regressor</span> <span class="o">=</span> <span class="n">DecisionTreeRegressor</span><span class="p">()</span>
 
     <span class="c1"># TODO: Create a dictionary for the parameter &#39;max_depth&#39; with a range from 1 to 10</span>
-    <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;max_depth&#39;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">]}</span>
 
     <span class="c1"># TODO: Transform &#39;performance_metric&#39; into a scoring function using &#39;make_scorer&#39; </span>
-    <span class="n">scoring_fnc</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">scoring_fnc</span> <span class="o">=</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">performance_metric</span><span class="p">)</span>
 
     <span class="c1"># TODO: Create the grid search object</span>
-    <span class="n">grid</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">regressor</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">scoring_fnc</span><span class="p">,</span> <span class="n">cv</span> <span class="o">=</span> <span class="n">cv_sets</span><span class="p">)</span>
 
     <span class="c1"># Fit the grid search object to the data to compute the optimal model</span>
-    <span class="n">grid</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">y</span><span class="p">)</span>
 
     <span class="c1"># Return the optimal model after fitting the data</span>
     <span class="k">return</span> <span class="n">grid</span><span class="o">.</span><span class="n">best_estimator_</span>
@@ -14258,7 +14265,7 @@ For the <code>fit_model</code> function in the code cell below, you will need to
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[48]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Fit the training data to the model using grid search</span>
@@ -14272,13 +14279,239 @@ For the <code>fit_model</code> function in the code cell below, you will need to
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Parameter &#39;max_depth&#39; is 3 for the optimal model.
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/metrics/regression.py:471: DeprecationWarning: Default &#39;multioutput&#39; behavior now corresponds to &#39;variance_weighted&#39; value, it will be changed to &#39;uniform_average&#39; in 0.18.
+  DeprecationWarning)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer: </strong></p>
+<p><strong>Answer: </strong> Depth = 3, it actually matches with my result.</p>
 
 </div>
 </div>
@@ -14327,7 +14560,7 @@ For the <code>fit_model</code> function in the code cell below, you will need to
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[49]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Produce a matrix for client data</span>
@@ -14341,6 +14574,42 @@ For the <code>fit_model</code> function in the code cell below, you will need to
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">ValueError</span>                                Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-49-7447b9636274&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">      5</span> 
+<span class="ansi-green-intense-fg ansi-bold">      6</span> <span class="ansi-red-fg"># Show predictions</span>
+<span class="ansi-green-fg">----&gt; 7</span><span class="ansi-red-fg"> </span><span class="ansi-green-fg">for</span> i<span class="ansi-blue-fg">,</span> price <span class="ansi-green-fg">in</span> enumerate<span class="ansi-blue-fg">(</span>reg<span class="ansi-blue-fg">.</span>predict<span class="ansi-blue-fg">(</span>client_data<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">      8</span>     <span class="ansi-green-fg">print</span> <span class="ansi-blue-fg">&#34;Predicted selling price for Client {}&#39;s home: ${:,.2f}&#34;</span><span class="ansi-blue-fg">.</span>format<span class="ansi-blue-fg">(</span>i<span class="ansi-blue-fg">+</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span> price<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/tree/tree.pyc</span> in <span class="ansi-cyan-fg">predict</span><span class="ansi-blue-fg">(self, X, check_input)</span>
+<span class="ansi-green-intense-fg ansi-bold">    402</span>         &#34;&#34;&#34;
+<span class="ansi-green-intense-fg ansi-bold">    403</span> 
+<span class="ansi-green-fg">--&gt; 404</span><span class="ansi-red-fg">         </span>X <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_validate_X_predict<span class="ansi-blue-fg">(</span>X<span class="ansi-blue-fg">,</span> check_input<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    405</span>         proba <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>tree_<span class="ansi-blue-fg">.</span>predict<span class="ansi-blue-fg">(</span>X<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    406</span>         n_samples <span class="ansi-blue-fg">=</span> X<span class="ansi-blue-fg">.</span>shape<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span>
+
+<span class="ansi-green-fg">/Users/raghav/anaconda2/lib/python2.7/site-packages/sklearn/tree/tree.pyc</span> in <span class="ansi-cyan-fg">_validate_X_predict</span><span class="ansi-blue-fg">(self, X, check_input)</span>
+<span class="ansi-green-intense-fg ansi-bold">    374</span>                              <span class="ansi-blue-fg">&#34; match the input. Model n_features is %s and &#34;</span>
+<span class="ansi-green-intense-fg ansi-bold">    375</span>                              <span class="ansi-blue-fg">&#34; input n_features is %s &#34;</span>
+<span class="ansi-green-fg">--&gt; 376</span><span class="ansi-red-fg">                              % (self.n_features_, n_features))
+</span><span class="ansi-green-intense-fg ansi-bold">    377</span> 
+<span class="ansi-green-intense-fg ansi-bold">    378</span>         <span class="ansi-green-fg">return</span> X
+
+<span class="ansi-red-fg">ValueError</span>: Number of features of the model must  match the input. Model n_features is 1 and  input n_features is 3 </pre>
+</div>
+</div>
+
 </div>
 </div>
 
