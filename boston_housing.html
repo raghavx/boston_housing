@@ -14079,9 +14079,9 @@ QmCC
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer: </strong></p>
 <ul>
-<li>when the model is trained with maximum depth of 1, the model suffers from high variance.</li>
-<li>When model is trained with maximum depth of 10 then the model suffers from the high bias.</li>
-<li>The difference between training score and validation is very high when the depth is 10, and the difference in score suggest the model is repeatedly trained for a particular data set and it is not capturing the complexity and thus missing on generality and highly biased. While when depth = 1 the difference b/w score is very low and it is able to predict all the data and thus it has become overfitted and variance is very high.</li>
+<li>when the model is trained with maximum depth of 1, the model suffers from high bias because the score is lowest for training set.</li>
+<li>When model is trained with maximum depth of 10 then the model suffers from the high variance because score is highest for the training set.</li>
+<li>The r-square score is lowest for depth 1 and this is the situation of high biased as this doesn't give a good score for the traning set and the model is underfit. While at the depth = 10 the model is overfit and it gives a very good score on training set.</li>
 </ul>
 
 </div>
@@ -14102,7 +14102,10 @@ QmCC
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer: </strong></p>
+<p><strong>Answer: </strong> At depth = 5.</p>
+<ul>
+<li>For the best guess optimal model the r-square score should be high and the sse should be lowest. That is we have to minimise the error due to bias and error due to variance. At depth = 5 the square of  error b/w training set and testing set is low (as compared to depth = 10) as well as the r-square is high (as comapred to depth = 1)</li>
+</ul>
 
 </div>
 </div>
